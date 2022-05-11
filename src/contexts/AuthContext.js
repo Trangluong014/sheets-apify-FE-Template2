@@ -1,4 +1,4 @@
-import { createContext, useReducer, userEffect } from "react";
+import { createContext, useReducer, useEffect } from "react";
 import apiService from "../app/apiService";
 import { isValidToken } from "../utils/jwt";
 
@@ -14,6 +14,14 @@ const LOGOUT = "AUTH.LOGOUT";
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case INITIALIZE:
+      const { isAuthenticated, user } = action.payload;
+      return {
+        ...state,
+        isInitialized: true,
+        isAuthenticated,
+        user,
+      };
     case LOGIN_SUCCESS:
       return {
         ...state,
@@ -52,6 +60,41 @@ const AuthContext = createContext({ ...initialState });
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    const initialize = async () => {
+      try {
+        const accessToken = window.localStorage.getItem("accessToken");
+
+        if (accessToken && isValidToken(accessToken)) {
+          setSession(accessToken);
+
+          const response = await apiService.get("/user/profile");
+          const user = response.data.data;
+
+          dispatch({
+            type: INITIALIZE,
+            payload: { isAuthenticated: true, user },
+          });
+        } else {
+          setSession(null);
+          dispatch({
+            type: INITIALIZE,
+            payload: { isAuthenticated: false, user: null },
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        setSession(null);
+        dispatch({
+          type: INITIALIZE,
+          payload: { isAuthenticated: false, user: null },
+        });
+      }
+    };
+    initialize();
+  }, []);
+
   const login = async ({ email, password }, callback) => {
     const response = await apiService.post("/user/login", { email, password });
     const { user, accessToken } = response.data.data;
