@@ -5,15 +5,15 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea, Stack, Button, CardActions } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { fCurrency } from "../utils/numberFormat";
-import noImage from "../no-image.png";
+import noImage from "../../components/no-image.png";
+import { fCurrency } from "../../utils/numberFormat";
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
 
   return (
     <Card>
-      <CardActionArea onClick={() => navigate(`/products/${product.id}`)}>
+      <CardActionArea onClick={() => navigate(`/products/${product._id}`)}>
         <CardMedia
           component="img"
           height="140"
@@ -35,7 +35,7 @@ function ProductCard({ product }) {
               color="text.secondary"
               sx={{ textDecoration: "line-through", color: "text.disabled" }}
             >
-              {fCurrency(product.priceSale ? product.priceSale : "")}
+              {product.priceSale ? fCurrency(product.priceSale) : ""}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               {fCurrency(product.price)}

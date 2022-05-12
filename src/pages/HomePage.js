@@ -16,28 +16,26 @@ import { getProducts } from "../features/products/productSlice";
 import SearchIcon from "@mui/icons-material/Search";
 import { useForm } from "react-hook-form";
 import LoadingScreen from "../components/LoadingScreen";
-import ProductList from "../components/ProductList";
 
 import {
-  FMultiCheckbox,
   FormProvider,
   FRadioGroup,
   FSelect,
   FTextField,
 } from "../components/form";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
+import ProductList from "../features/products/ProductList";
 
 function HomePage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("");
   const [order, setOrder] = useState("");
-  const { currentPageProducts, productById, isLoading, totalPage, error } =
-    useSelector((state) => state.product);
-
-  const products = currentPageProducts.map(
-    (productId) => productById[productId]
+  const [gender, setGender] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const { products, isLoading, totalPage, error } = useSelector(
+    (state) => state.product
   );
 
   /* //pagination */
@@ -63,23 +61,18 @@ function HomePage() {
 
   /* //search */
 
-  const onSubmit = (event, value) => {
-    setSearch(value);
-  };
-
   const defaultValues = {
-    gender: [],
+    gender: "",
     category: "All",
-    priceRange: "",
-    sortBy: "price.desc",
-    searchQuery: "",
+    price: "",
+    sort: "price.desc",
+    search: "",
   };
   const methods = useForm({
     defaultValues,
   });
 
-  const { handleSubmit, watch, reset } = methods;
-  const filters = watch();
+  const { reset } = methods;
 
   const FILTER_GENDER_OPTIONS = ["Men", "Women", "Kids"];
   const FILTER_CATEGORY_OPTIONS = ["All", "Shoes", "Apparel", "Accessories"];
@@ -88,11 +81,36 @@ function HomePage() {
     { value: "between", label: "Between $25 - $75" },
     { value: "above", label: "Above $75" },
   ];
+  const PRICE_TO_QUERY = {
+    below: {
+      price__lt: 25,
+    },
+    between: {
+      price__ge: 25,
+      price__le: 75,
+    },
+    above: {
+      price__gt: 75,
+    },
+  };
 
   const dispatch = useDispatch();
   useEffect(() => {
-    getProducts(page, search, filter, sort, order);
-  }, [dispatch, page, search, filter, sort, order]);
+    const pricequery = price ? PRICE_TO_QUERY[price] : "";
+    const searchquery = search ? { name__contains: search } : "";
+
+    dispatch(
+      getProducts({
+        page,
+        searchquery,
+        sort,
+        order,
+        gender,
+        category,
+        pricequery,
+      })
+    );
+  }, [dispatch, page, search, sort, order, gender, category, price]);
 
   return (
     <Container>
@@ -109,7 +127,12 @@ function HomePage() {
                 <Typography variant="h6" sx={{ fontWeight: 600 }}>
                   Gender
                 </Typography>
-                <FMultiCheckbox name="gender" options={FILTER_GENDER_OPTIONS} />
+                <FRadioGroup
+                  name="gender"
+                  options={FILTER_GENDER_OPTIONS}
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                />
               </Stack>
 
               <Stack>
@@ -119,6 +142,8 @@ function HomePage() {
                 <FRadioGroup
                   name="category"
                   options={FILTER_CATEGORY_OPTIONS}
+                  onChange={(e) => setCategory(e.target.value)}
+                  value={category}
                 />
               </Stack>
 
@@ -127,11 +152,13 @@ function HomePage() {
                   Price
                 </Typography>
                 <FRadioGroup
-                  name="priceRange"
+                  name="price"
+                  value={price}
                   options={FILTER_PRICE_OPTIONS.map((item) => item.value)}
                   getOptionLabel={FILTER_PRICE_OPTIONS.map(
                     (item) => item.label
                   )}
+                  onChange={(e) => setPrice(e.target.value)}
                 />
               </Stack>
 
@@ -147,59 +174,64 @@ function HomePage() {
             </Stack>
           </FormProvider>
         </Stack>
-        <Stack sx={{ flexGrow: 1 }}>
-          <FormProvider methods={methods}>
-            {/* //search */}
-            <FTextField
-              name="searchQuery"
-              sx={{ width: 300 }}
-              size="small"
-              onSubmit={handleSubmit(onSubmit)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {/* //sort */}
-            <FSelect
-              name="sort"
-              size="small"
-              sx={{ width: 300 }}
-              onChange={handleChangeSort}
-            >
-              {SORT_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </FSelect>
-          </FormProvider>
+        <Stack>
+          <Stack sx={{ flexGrow: 1 }} direction="row">
+            <FormProvider methods={methods}>
+              {/* //search */}
+              <FTextField
+                name="search"
+                sx={{ width: 300 }}
+                size="small"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              {/* //sort */}
+            </FormProvider>
+            <FormProvider methods={methods}>
+              <FSelect
+                name="sort"
+                size="small"
+                sx={{ width: 300 }}
+                onChange={handleChangeSort}
+              >
+                {SORT_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </FSelect>
+            </FormProvider>
+          </Stack>
+          <Stack>
+            <Box sx={{ position: "relative", height: 1 }}>
+              {isLoading ? (
+                <LoadingScreen />
+              ) : (
+                <>
+                  {error ? (
+                    <Alert severity="error">{error}</Alert>
+                  ) : (
+                    <ProductList products={products} />
+                  )}
+                </>
+              )}
+            </Box>
+          </Stack>
         </Stack>
       </Stack>
-      <Box sx={{ position: "relative", height: 1 }}>
-        {isLoading ? (
-          <LoadingScreen />
-        ) : (
-          <>
-            {error ? (
-              <Alert severity="error">{error}</Alert>
-            ) : (
-              <ProductList products={products} />
-            )}
-          </>
-        )}
-      </Box>
 
       <Box sx={{ display: "flex", justifyContent: "center", mt: 3, mb: 3 }}>
         <Pagination
           count={totalPage}
           page={page}
-          onChange={handleChangePage}
-          showFirstButton
-          showLastButton
+          onChange={(e) => setPage(e.target.value)}
         />
       </Box>
     </Container>

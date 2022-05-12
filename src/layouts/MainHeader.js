@@ -5,15 +5,20 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
 import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import Menu from "@mui/material/Menu";
 
-import { Link } from "@mui/material";
+import { Link, MenuItem } from "@mui/material";
 import useAuth from "../hooks/useAuth";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
 
 function MainHeader() {
   const { isAuthenticated, user, logout } = useAuth();
-  console.log(user);
+
+  let navigate = useNavigate();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -38,6 +43,7 @@ function MainHeader() {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
+              onClick={() => navigate(`/`)}
             >
               Logo
             </IconButton>
