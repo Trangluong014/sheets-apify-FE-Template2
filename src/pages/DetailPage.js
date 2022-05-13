@@ -12,26 +12,26 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link as RouterLink } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen";
 import { getSingleProduct } from "../features/products/productSlice";
 import { fCurrency } from "../utils/numberFormat";
 import noImage from "../components/no-image.png";
-import rehypeRaw from "rehype-raw";
 
 function DetailPage() {
   const params = useParams();
   const { product, isloading, error } = useSelector((state) => state.product);
-  const productId = params.id;
+  const { productId } = params;
+  const { website } = useSelector((state) => state.website);
   console.log(params);
   console.log(productId);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getSingleProduct({ productId }));
-  }, [productId, dispatch]);
+    const { spreadsheetId } = website;
+    dispatch(getSingleProduct({ spreadsheetId, productId }));
+  }, [productId, dispatch, website]);
 
   return (
     <Container sx={{ my: 3 }}>

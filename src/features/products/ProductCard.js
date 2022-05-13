@@ -7,13 +7,17 @@ import { CardActionArea, Stack, Button, CardActions } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import noImage from "../../components/no-image.png";
 import { fCurrency } from "../../utils/numberFormat";
+import { useSelector } from "react-redux";
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
+  const { website } = useSelector((state) => state.website);
 
   return (
     <Card>
-      <CardActionArea onClick={() => navigate(`/products/${product._id}`)}>
+      <CardActionArea
+        onClick={() => navigate(`/${website._id}/products/${product._id}`)}
+      >
         <CardMedia
           component="img"
           height="140"

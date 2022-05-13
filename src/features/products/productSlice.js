@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
 import apiService from "../../app/apiService";
 import { LIMIT_PER_PAGE } from "../../app/config";
-import { SPREADSHEETID } from "../../app/config";
 
 const initialState = {
   isLoading: false,
@@ -58,8 +56,10 @@ const slice = createSlice({
 
 export const getSingleProduct = createAsyncThunk(
   "products/getSingleProduct",
-  async ({ id = SPREADSHEETID, productId }) => {
-    const response = await apiService.get(`/item/single/${id}/${productId}`);
+  async ({ spreadsheetId, productId }) => {
+    const response = await apiService.get(
+      `/item/single/${spreadsheetId}/${productId}`
+    );
     return response.data.data;
   }
 );
@@ -67,7 +67,7 @@ export const getProducts = createAsyncThunk(
   "products/getProducts",
   async ({
     limit = LIMIT_PER_PAGE,
-    id = SPREADSHEETID,
+    spreadsheetId,
     page,
     searchquery,
     sort,
@@ -90,7 +90,9 @@ export const getProducts = createAsyncThunk(
       ...pricequery,
     };
 
-    const response = await apiService.get(`/item/all/${id}`, { params });
+    const response = await apiService.get(`/item/all/${spreadsheetId}`, {
+      params,
+    });
     return response.data.data;
   }
 );

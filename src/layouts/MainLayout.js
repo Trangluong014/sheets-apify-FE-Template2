@@ -1,20 +1,37 @@
 import { Box, Stack } from "@mui/material";
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Outlet, useParams } from "react-router-dom";
+import LoadingScreen from "../components/LoadingScreen";
+import { getSingleWebsite } from "../features/websites/websiteSlice";
 
 import MainFooter from "./MainFooter";
 import MainHeader from "./MainHeader";
 
 function MainLayout() {
-  return (
-    <Stack sx={{ minHeight: "100vh" }}>
-      <MainHeader />
+  const { webId } = useParams();
 
-      <Outlet />
-      <Box sx={{ flexGrow: 1 }} />
-      <MainFooter />
-    </Stack>
-  );
+  const dispatch = useDispatch();
+
+  const { website } = useSelector((state) => state.website);
+
+  useEffect(() => {
+    dispatch(getSingleWebsite(webId));
+  }, []);
+
+  if (website) {
+    return (
+      <Stack sx={{ minHeight: "100vh" }}>
+        <MainHeader />
+
+        <Outlet />
+        <Box sx={{ flexGrow: 1 }} />
+        <MainFooter />
+      </Stack>
+    );
+  } else {
+    return <LoadingScreen />;
+  }
 }
 
 export default MainLayout;

@@ -25,6 +25,8 @@ import {
 } from "../components/form";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import ProductList from "../features/products/ProductList";
+import { getSingleWebsite } from "../features/websites/websiteSlice";
+import { useParams } from "react-router-dom";
 
 function HomePage() {
   const [page, setPage] = useState(1);
@@ -34,15 +36,13 @@ function HomePage() {
   const [gender, setGender] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
+  const params = useParams();
+  console.log(params);
   const { products, isLoading, totalPage, error } = useSelector(
     (state) => state.product
   );
 
-  /* //pagination */
-
-  const handleChangePage = (event, value) => {
-    setPage(value);
-  };
+  const { website } = useSelector((state) => state.website);
 
   /* //sort */
 
@@ -95,12 +95,15 @@ function HomePage() {
   };
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     const pricequery = price ? PRICE_TO_QUERY[price] : "";
     const searchquery = search ? { name__contains: search } : "";
+    const { spreadsheetId } = website;
 
     dispatch(
       getProducts({
+        spreadsheetId,
         page,
         searchquery,
         sort,
