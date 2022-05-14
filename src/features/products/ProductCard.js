@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea, Stack, Button, CardActions } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import noImage from "../../components/no-image.png";
-import { fCurrency } from "../../utils/numberformat";
+import { fCurrency } from "../../utils/numberFormat";
 import { useSelector } from "react-redux";
 
 function ProductCard({ product }) {
