@@ -61,9 +61,9 @@ function RegisterPage() {
     const from = location.state?.from?.pathname || "/";
     let { name, email, password } = data;
     let role = "Customer";
-    let { webId } = website;
+    let { websiteId } = website;
     try {
-      await auth.register({ name, email, password, role, webId }, () => {
+      await auth.register({ name, email, password, role, websiteId }, () => {
         navigate(from, { replace: true });
       });
     } catch (error) {
