@@ -106,11 +106,13 @@ function AuthProvider({ children }) {
     callback();
   };
 
-  const register = async ({ name, email, password }, callback) => {
+  const register = async ({ name, email, password, role, webId }, callback) => {
     const response = await apiService.post("/user/register", {
       name,
       email,
       password,
+      role,
+      webId,
     });
     const { user, accessToken } = response.data;
     setSession(accessToken);

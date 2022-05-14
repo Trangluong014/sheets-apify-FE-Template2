@@ -19,6 +19,7 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { LoadingButton } from "@mui/lab";
+import { useSelector } from "react-redux";
 
 const RegisterSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -47,6 +48,7 @@ function RegisterPage() {
     resolver: yupResolver(RegisterSchema),
     defaultValues,
   });
+  const { website } = useSelector((state) => state.website);
 
   const {
     handleSubmit,
@@ -58,8 +60,10 @@ function RegisterPage() {
   const onSubmit = async (data) => {
     const from = location.state?.from?.pathname || "/";
     let { name, email, password } = data;
+    let role = "Customer";
+    let { webId } = website;
     try {
-      await auth.register({ name, email, password }, () => {
+      await auth.register({ name, email, password, role, webId }, () => {
         navigate(from, { replace: true });
       });
     } catch (error) {
