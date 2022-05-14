@@ -16,7 +16,9 @@ function ProductCard({ product }) {
   return (
     <Card>
       <CardActionArea
-        onClick={() => navigate(`/${website._id}/products/${product._id}`)}
+        onClick={() =>
+          navigate(`/${website.websiteId}/products/${product._id}`)
+        }
       >
         <CardMedia
           component="img"
