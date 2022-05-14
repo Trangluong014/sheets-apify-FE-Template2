@@ -10,6 +10,7 @@ import MainHeader from "./MainHeader";
 
 function MainLayout() {
   const { websiteId } = useParams();
+  console.log(websiteId);
 
   const dispatch = useDispatch();
 
@@ -17,7 +18,7 @@ function MainLayout() {
 
   useEffect(() => {
     dispatch(getSingleWebsite(websiteId));
-  }, []);
+  }, [websiteId]);
 
   if (website) {
     return (
