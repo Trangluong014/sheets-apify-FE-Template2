@@ -58,7 +58,7 @@ export const getSingleProduct = createAsyncThunk(
   "products/getSingleProduct",
   async ({ spreadsheetId, productId }) => {
     const response = await apiService.get(
-      `/item/single/${spreadsheetId}/${productId}`
+      `/item/${spreadsheetId}/${productId}`
     );
     return response.data.data;
   }
@@ -90,7 +90,7 @@ export const getProducts = createAsyncThunk(
       ...pricequery,
     };
 
-    const response = await apiService.get(`/item/all/${spreadsheetId}`, {
+    const response = await apiService.get(`/item/${spreadsheetId}`, {
       params,
     });
     return response.data.data;
