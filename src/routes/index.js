@@ -15,10 +15,12 @@ import AuthRequire from "./AuthRequire";
 function Router() {
   return (
     <Routes>
-      <Route index element={<NotFoundPage />} />
       <Route path="/:websiteId" element={<MainLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="/:websiteId/products/:productId" element={<DetailPage />} />
+        <Route
+          path="/:websiteId/products/:productId"
+          element={<DetailPage />}
+        />
         <Route
           path="/:websiteId/checkout"
           element={
@@ -49,6 +51,7 @@ function Router() {
         <Route path="/:websiteId/register" element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
+      <Route index element={<NotFoundPage />} />
     </Routes>
   );
 }
