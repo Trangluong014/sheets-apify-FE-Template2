@@ -24,7 +24,7 @@ const slice = createSlice({
         state.status = "idle";
         state.isLoading = false;
         state.error = "";
-        state.website = action.payload.web;
+        state.website = action.payload.website;
       })
       .addCase(getSingleWebsite.rejected, (state, action) => {
         state.status = "fail";
@@ -37,7 +37,7 @@ const slice = createSlice({
 export const getSingleWebsite = createAsyncThunk(
   "websites/getSingleWebsite",
   async ({ websiteId }) => {
-    const response = await apiService.get(`/web/${websiteId}`);
+    const response = await apiService.get(`/website/${websiteId}`);
     return response.data.data;
   }
 );
