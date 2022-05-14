@@ -9,14 +9,14 @@ import MainFooter from "./MainFooter";
 import MainHeader from "./MainHeader";
 
 function MainLayout() {
-  const { webId } = useParams();
+  const { websiteId } = useParams();
 
   const dispatch = useDispatch();
 
   const { website } = useSelector((state) => state.website);
 
   useEffect(() => {
-    dispatch(getSingleWebsite(webId));
+    dispatch(getSingleWebsite(websiteId));
   }, []);
 
   if (website) {

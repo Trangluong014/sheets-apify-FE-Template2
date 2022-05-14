@@ -16,11 +16,11 @@ function Router() {
   return (
     <Routes>
       <Route index element={<NotFoundPage />} />
-      <Route path="/:webId" element={<MainLayout />}>
+      <Route path="/:websiteId" element={<MainLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="/:webId/products/:productId" element={<DetailPage />} />
+        <Route path="/:websiteId/products/:productId" element={<DetailPage />} />
         <Route
-          path="/:webId/checkout"
+          path="/:websiteId/checkout"
           element={
             <AuthRequire>
               <CheckoutPage />
@@ -28,7 +28,7 @@ function Router() {
           }
         />
         <Route
-          path="/:webId/checkout/completed"
+          path="/:websiteId/checkout/completed"
           element={
             <AuthRequire>
               <CheckoutCompletedPage />
@@ -36,7 +36,7 @@ function Router() {
           }
         />
         <Route
-          path="/:webId/orders"
+          path="/:websiteId/orders"
           element={
             <AuthRequire>
               <OrderPage />
@@ -44,9 +44,9 @@ function Router() {
           }
         />
       </Route>
-      <Route path="/:webId" element={<BlankLayout />}>
-        <Route path="/:webId/login" element={<LoginPage />} />
-        <Route path="/:webId/register" element={<RegisterPage />} />
+      <Route path="/:websiteId" element={<BlankLayout />}>
+        <Route path="/:websiteId/login" element={<LoginPage />} />
+        <Route path="/:websiteId/register" element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

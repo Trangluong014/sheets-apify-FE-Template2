@@ -36,8 +36,8 @@ const slice = createSlice({
 
 export const getSingleWebsite = createAsyncThunk(
   "websites/getSingleWebsite",
-  async ({ webId }) => {
-    const response = await apiService.get(`/web/${webId}`);
+  async ({ websiteId }) => {
+    const response = await apiService.get(`/web/${websiteId}`);
     return response.data.data;
   }
 );
