@@ -51,7 +51,6 @@ function Router() {
         <Route path="/:websiteId/register" element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
-      <Route index element={<NotFoundPage />} />
     </Routes>
   );
 }
