@@ -6,7 +6,7 @@ import {
   FormControlLabel,
 } from "@mui/material";
 
-function FRadioGroup({ name, options, getOptionLabel, ...other }) {
+function FRadioGroup({ name, options, getOptionLabel, labelProps={}, ...other }) {
   const { control } = useFormContext();
 
   return (
@@ -21,7 +21,9 @@ function FRadioGroup({ name, options, getOptionLabel, ...other }) {
                 key={option}
                 value={option}
                 control={<Radio />}
-                label={getOptionLabel?.length ? getOptionLabel[index] : option}
+                label={getOptionLabel ? getOptionLabel(option) : option}
+                labelPlacement="bottom"
+                {...labelProps}
               />
             ))}
           </RadioGroup>

@@ -7,6 +7,9 @@ import {
   InputAdornment,
   Button,
   Pagination,
+  TextField,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 import React, { useState, useEffect } from "react";
@@ -25,17 +28,32 @@ import {
 } from "../components/form";
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import ProductList from "../features/products/ProductList";
-import { getSingleWebsite } from "../features/websites/websiteSlice";
 import { useParams } from "react-router-dom";
+import { parse } from 'qs';
+import apiService from "../app/apiService";
+
+const FILTERS = [
+  {
+    label: "Gender",
+    sheet: "GenderFilter"
+  }, 
+  { 
+    label: "Category",
+    sheet: "CategoryFilter"
+  }, 
+  { 
+    label: "Price",
+    sheet: "PriceFilter"
+  }
+];
+const EMPTY = "__empty__"
 
 function HomePage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [order, setOrder] = useState("");
-  const [gender, setGender] = useState("");
-  const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
+
   const params = useParams();
   console.log(params);
   const { products, isLoading, totalPage, error } = useSelector(
@@ -43,6 +61,32 @@ function HomePage() {
   );
 
   const { website } = useSelector((state) => state.website);
+
+  // filters
+  const [filterValues, setFilterValues] = useState([]);
+
+  useEffect(() => {
+    const { spreadsheetId } = website;
+    Promise.all(FILTERS.map(async ({ sheet: range }) => {
+      try {
+        const response = await apiService.get(`/item/${spreadsheetId}`, {
+          params: {
+            range,
+          }
+        });
+        const { itemList } = response.data.data;
+
+        return itemList.map(({label, value}) => ({ 
+          label,
+          value: value || EMPTY,
+        }))
+      }
+      catch {
+        return [];
+      }
+    }))
+    .then(setFilterValues)
+  }, [setFilterValues])
 
   /* //sort */
 
@@ -63,43 +107,20 @@ function HomePage() {
 
   const defaultValues = {
     gender: "",
-    category: "All",
+    category: "",
     price: "",
-    sort: "price.desc",
-    search: "",
   };
   const methods = useForm({
     defaultValues,
   });
 
-  const { reset } = methods;
-
-  const FILTER_GENDER_OPTIONS = ["Men", "Women", "Kids"];
-  const FILTER_CATEGORY_OPTIONS = ["All", "Shoes", "Apparel", "Accessories"];
-  const FILTER_PRICE_OPTIONS = [
-    { value: "below", label: "Below $25" },
-    { value: "between", label: "Between $25 - $75" },
-    { value: "above", label: "Above $75" },
-  ];
-  const PRICE_TO_QUERY = {
-    below: {
-      price__lt: 25,
-    },
-    between: {
-      price__ge: 25,
-      price__le: 75,
-    },
-    above: {
-      price__gt: 75,
-    },
-  };
+  const { reset, watch } = methods;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const pricequery = price ? PRICE_TO_QUERY[price] : "";
-    const searchquery = search ? { name__contains: search } : "";
     const { spreadsheetId } = website;
+    const searchquery = search ? { name__contains: search } : "";
 
     dispatch(
       getProducts({
@@ -108,12 +129,35 @@ function HomePage() {
         searchquery,
         sort,
         order,
-        gender,
-        category,
-        pricequery,
       })
     );
-  }, [dispatch, page, search, sort, order, gender, category, price]);
+  }, [dispatch, page, search, sort, order]);
+
+  React.useEffect(() => {
+    const subscription = watch((data) => {
+      const params = Object
+        .values(data)
+        .filter(Boolean)
+        .filter(value => value !== EMPTY)
+        .map(value => parse(value))
+        .reduce((prev, curr) => ({...prev, ...curr}), {})
+      
+      const { spreadsheetId } = website;
+      const searchquery = search ? { name__contains: search } : "";
+  
+      dispatch(
+        getProducts({
+          spreadsheetId,
+          page,
+          searchquery,
+          sort,
+          order,
+          ...params,
+        })
+      );
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <Container>
@@ -126,44 +170,25 @@ function HomePage() {
         <Stack>
           <FormProvider methods={methods}>
             <Stack spacing={3} sx={{ p: 3, width: 150 }}>
-              <Stack>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Gender
-                </Typography>
-                <FRadioGroup
-                  name="gender"
-                  options={FILTER_GENDER_OPTIONS}
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                />
-              </Stack>
-
-              <Stack>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Category
-                </Typography>
-                <FRadioGroup
-                  name="category"
-                  options={FILTER_CATEGORY_OPTIONS}
-                  onChange={(e) => setCategory(e.target.value)}
-                  value={category}
-                />
-              </Stack>
-
-              <Stack>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Price
-                </Typography>
-                <FRadioGroup
-                  name="price"
-                  value={price}
-                  options={FILTER_PRICE_OPTIONS.map((item) => item.value)}
-                  getOptionLabel={FILTER_PRICE_OPTIONS.map(
-                    (item) => item.label
-                  )}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-              </Stack>
+              {FILTERS.map(({ label: filter }, index) => {
+                if (!filterValues[index]) return;
+                const lcaseFilter = filter.toLowerCase();
+                return (
+                  <Stack key={filter} direction="column">
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      {filter}
+                    </Typography>
+                    <FRadioGroup
+                      name={lcaseFilter}
+                      options={filterValues[index].map(option => option.value)}
+                      getOptionLabel={option => filterValues[index].find(o => o.value === option).label}
+                      labelProps={{
+                        labelPlacement: "end",
+                      }}
+                      row={false}
+                    />
+                  </Stack>)
+              })}
 
               <Box>
                 <Button
@@ -179,38 +204,35 @@ function HomePage() {
         </Stack>
         <Stack>
           <Stack sx={{ flexGrow: 1 }} direction="row">
-            <FormProvider methods={methods}>
-              {/* //search */}
-              <FTextField
-                name="search"
-                sx={{ width: 300 }}
-                size="small"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              {/* //sort */}
-            </FormProvider>
-            <FormProvider methods={methods}>
-              <FSelect
-                name="sort"
-                size="small"
-                sx={{ width: 300 }}
-                onChange={handleChangeSort}
-              >
-                {SORT_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </FSelect>
-            </FormProvider>
+            {/* //search */}
+            <TextField
+              name="search"
+              sx={{ width: 300 }}
+              size="small"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            {/* //sort */}
+            <Select
+              name="sort"
+              size="small"
+              sx={{ width: 300 }}
+              onChange={handleChangeSort}
+              value={sort}
+            >
+              {SORT_OPTIONS.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
           </Stack>
           <Stack>
             <Box sx={{ position: "relative", height: 1 }}>
