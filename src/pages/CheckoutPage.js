@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import CartProductList from "../features/carts/CartProductList";
 import CheckoutDelivery from "../features/carts/CheckoutDelivery";
 import CheckoutSummary from "../features/carts/CheckoutSummary";
+import { useSelector } from "react-redux";
 
 const STEPS = ["Cart", "Delivery", "Summary"];
 
@@ -25,11 +26,17 @@ function CheckoutPage() {
     setActiveStep(step);
   };
 
+  const { website } = useSelector((state) => state.website);
   return (
     <Container sx={{ my: 3 }}>
       <Breadcrumbs sx={{ mb: 4 }}>
-        <Link underline="hover" color="inherit" component={RouterLink} to="/">
-          CoderStore
+        <Link
+          underline="hover"
+          color="inherit"
+          component={RouterLink}
+          to={`/${website.websiteId}`}
+        >
+          {website.name}
         </Link>
         <Typography color="text.primary">Checkout</Typography>
       </Breadcrumbs>

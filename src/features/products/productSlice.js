@@ -72,22 +72,15 @@ export const getProducts = createAsyncThunk(
     searchquery,
     sort,
     order,
-    gender,
-    category,
-    pricequery,
+    ...rest
   }) => {
-    console.log(searchquery);
-    console.log(pricequery);
-
     const params = {
       limit,
       page,
       ...searchquery,
       sort,
       order,
-      gender,
-      category,
-      ...pricequery,
+      ...rest,
     };
 
     const response = await apiService.get(`/item/${spreadsheetId}`, {

@@ -18,30 +18,12 @@ function Router() {
       <Route path="/:websiteId" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/:websiteId/products/:rowIndex" element={<DetailPage />} />
-        <Route
-          path="/:websiteId/checkout"
-          element={
-            <AuthRequire>
-              <CheckoutPage />
-            </AuthRequire>
-          }
-        />
+        <Route path="/:websiteId/checkout" element={<CheckoutPage />} />
         <Route
           path="/:websiteId/checkout/completed"
-          element={
-            <AuthRequire>
-              <CheckoutCompletedPage />
-            </AuthRequire>
-          }
+          element={<CheckoutCompletedPage />}
         />
-        <Route
-          path="/:websiteId/orders"
-          element={
-            <AuthRequire>
-              <OrderPage />
-            </AuthRequire>
-          }
-        />
+        <Route path="/:websiteId/orders" element={<OrderPage />} />
       </Route>
       <Route path="/:websiteId" element={<BlankLayout />}>
         <Route path="/:websiteId/login" element={<LoginPage />} />

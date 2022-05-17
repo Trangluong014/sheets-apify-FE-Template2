@@ -35,7 +35,7 @@ function MainHeader() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {website?.name}
           </Typography>
-          <Button
+          {/* <Button
             color="inherit"
             onClick={() => {
               return isAuthenticated ? logout() : null;
@@ -43,7 +43,7 @@ function MainHeader() {
           >
             {" "}
             {isAuthenticated ? "Sign Out" : `Sign In`}
-          </Button>
+          </Button> */}
         </Toolbar>
       </AppBar>
     </Box>

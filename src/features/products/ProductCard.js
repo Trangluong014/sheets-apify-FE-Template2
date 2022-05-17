@@ -8,10 +8,13 @@ import { useNavigate } from "react-router-dom";
 import noImage from "../../components/no-image.png";
 import { fCurrency } from "../../utils/numberFormat";
 import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../carts/cartSlice";
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
+
   const { website } = useSelector((state) => state.website);
+
   const dispatch = useDispatch();
 
   return (
@@ -24,7 +27,7 @@ function ProductCard({ product }) {
         <CardMedia
           component="img"
           height="140"
-          image={product.image ? product.image : noImage}
+          image={product.cover ? product.cover : noImage}
           alt={product.name}
         />
         <CardContent>
@@ -52,7 +55,7 @@ function ProductCard({ product }) {
       </CardActionArea>
       <CardActions>
         <Button
-          onClick={() => dispatch({ type: "ADD_TO_CART", payload: product })}
+          onClick={() => dispatch(addToCart(product))}
           variant="contained"
         >
           Add to Cart

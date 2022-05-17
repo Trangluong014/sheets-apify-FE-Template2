@@ -13,29 +13,35 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 import { fCurrency } from "../../utils/numberFormat";
+import { checkout, clearCart } from "./cartSlice";
 
 function CheckoutSummary() {
-  const { cartProducts, delivery, checkout, dispatch } = useSelector(
+  const { delivery, cartItems, cartTotalAmount } = useSelector(
     (state) => state.cart
   );
-  const totalPrice = cartProducts.reduce(
-    (acc, product) => (acc += product.price * product.quantity),
-    0
-  );
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useAuth();
-
+  const { website } = useSelector((state) => state.website);
   const handleCheckout = () => {
-    const order = { cartProducts, delivery, totalPrice, user };
-    checkout(order, () => {
-      navigate("/checkout/completed", { replace: true });
-    });
-    dispatch({ type: "CLEAR" });
+    const order = { delivery, cartItems, cartTotalAmount };
+    console.log(order);
+    dispatch(
+      checkout({
+        order,
+        cb: () => {
+          navigate(`/${website.websiteId}/checkout/completed`, {
+            replace: true,
+          });
+        },
+      })
+    );
+
+    dispatch(clearCart());
   };
 
   return (
@@ -46,6 +52,14 @@ function CheckoutSummary() {
         <Box>
           <Typography>Order Date</Typography>
           <Typography>{new Date().toLocaleDateString("en-GB")}</Typography>
+        </Box>
+        <Box>
+          <Typography>Name</Typography>
+          <Typography>{delivery.name}</Typography>
+        </Box>
+        <Box>
+          <Typography>Phone Number</Typography>
+          <Typography>{delivery.phone}</Typography>
         </Box>
         <Box>
           <Typography>Address</Typography>
@@ -72,8 +86,8 @@ function CheckoutSummary() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cartProducts.map(({ id, name, price, quantity, cover }) => (
-              <TableRow key={id}>
+            {cartItems.map(({ _id, name, price, cartQuantity, cover }) => (
+              <TableRow key={_id}>
                 <TableCell>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Box
@@ -99,8 +113,8 @@ function CheckoutSummary() {
                   </Box>
                 </TableCell>
                 <TableCell>{fCurrency(price)}</TableCell>
-                <TableCell>{quantity}</TableCell>
-                <TableCell>{fCurrency(quantity * price)}</TableCell>
+                <TableCell>{cartQuantity}</TableCell>
+                <TableCell>{fCurrency(cartQuantity * price)}</TableCell>
               </TableRow>
             ))}
             <TableRow>
@@ -108,7 +122,7 @@ function CheckoutSummary() {
               <TableCell />
               <TableCell>Total Price</TableCell>
               <TableCell>
-                <Typography>{fCurrency(totalPrice)}</Typography>
+                <Typography>{fCurrency(cartTotalAmount)}</Typography>
               </TableCell>
             </TableRow>
           </TableBody>

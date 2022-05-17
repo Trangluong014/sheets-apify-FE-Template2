@@ -19,6 +19,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import { getSingleProduct } from "../features/products/productSlice";
 import { fCurrency } from "../utils/numberFormat";
 import noImage from "../components/no-image.png";
+import { addToCart } from "../features/carts/cartSlice";
 
 function DetailPage() {
   const { rowIndex } = useParams();
@@ -26,6 +27,7 @@ function DetailPage() {
   const { website } = useSelector((state) => state.website);
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     const { spreadsheetId } = website;
     const range = website.ranges[0];
@@ -136,12 +138,7 @@ function DetailPage() {
                             <Box sx={{ my: 3 }}>
                               <Button
                                 variant="contained"
-                                onClick={() =>
-                                  dispatch({
-                                    type: "ADD_TO_CART",
-                                    payload: product,
-                                  })
-                                }
+                                onClick={() => dispatch(addToCart(product))}
                               >
                                 Add to Cart
                               </Button>

@@ -5,13 +5,18 @@ import * as yup from "yup";
 import { FormProvider, FTextField } from "../../components/form";
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { setDelivery } from "./cartSlice";
 
 const DeliverySchema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  phone: yup.string().required("Phone Number is required"),
   address: yup.string().required("Adress is required"),
   city: yup.string().required("City is required"),
   country: yup.string().required("Country is required"),
 });
 const defaultValues = {
+  name: "",
+  phone: "",
   address: "",
   city: "",
   country: "",
@@ -30,7 +35,7 @@ function CheckoutDelivery({ setActiveStep }) {
   const onSubmit = (data) => {
     setActiveStep((step) => step + 1);
     window.localStorage.setItem("defaultAddress", JSON.stringify(data));
-    dispatch({ type: "SET_DELIVERY", payload: data });
+    dispatch(setDelivery(data));
   };
 
   return (
@@ -40,7 +45,8 @@ function CheckoutDelivery({ setActiveStep }) {
           <Typography variant="h4" textAlign="center">
             Delivery Address
           </Typography>
-
+          <FTextField name="name" label="Name" />
+          <FTextField name="phone" label="Phone" />
           <FTextField name="address" label="Address" />
           <FTextField name="city" label="City" />
           <FTextField name="country" label="Country" />

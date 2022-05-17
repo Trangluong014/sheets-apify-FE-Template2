@@ -86,7 +86,7 @@ function HomePage() {
         }
       })
     ).then(setFilterValues);
-  }, [setFilterValues]);
+  }, [setFilterValues, website]);
 
   /* //sort */
 
@@ -131,7 +131,7 @@ function HomePage() {
         order,
       })
     );
-  }, [dispatch, page, search, sort, order]);
+  }, [website, dispatch, page, search, sort, order]);
 
   React.useEffect(() => {
     const subscription = watch((data) => {
@@ -156,7 +156,7 @@ function HomePage() {
       );
     });
     return () => subscription.unsubscribe();
-  }, [watch]);
+  }, [watch, dispatch, order, search, sort, page, website]);
 
   return (
     <Container sx={{ display: "flex", minHeight: "100vh", mt: 3 }}>

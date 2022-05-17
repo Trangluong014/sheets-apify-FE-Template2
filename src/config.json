@@ -1,0 +1,28 @@
+{
+  "logo": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAq0lEQVRYhe3UQQ5AMBAF0L/qJRzB2biKjetYs7TgIrqV1AiSokXRRHT+bKSZ9pUC4HA4f4mai4HvAAIpSkiqkq7Ers9WEi0yxGdAhHo1raaRa8BUPXJtUztAbJafCOEAjFWsCR1IjBMSR0DRXViAytheOQO9fhY60BnbO2dA0XF7Bhq/j2jZlLdDXtbz9JoeAM8/tFPg/q/iMmDL94G3i4EQgbfCQIgAhxN2BjSvL2A5DcJuAAAAAElFTkSuQmCC",
+  "theme": {
+    "palette": {
+      "type": "dark",
+      "primary": {
+        "main": "#ff8f00"
+      },
+      "secondary": {
+        "main": "#f50057"
+      },
+      "background": {
+        "default": "#310000",
+        "paper": "#731010"
+      },
+      "text": {
+        "primary": "#fff",
+        "secondary": "rgba(255, 255, 255, 0.7)"
+      }
+    },
+    "typography": {
+      "fontFamily": "Do Hyeon"
+    },
+    "shape": {
+      "borderRadius": 16
+    }
+  }
+}

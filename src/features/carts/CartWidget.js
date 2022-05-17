@@ -1,10 +1,11 @@
 import { Badge } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React from "react";
+import React, { useEffect } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link as RouterLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SatelliteAlt } from "@mui/icons-material";
+import { getTotals } from "./cartSlice";
 
 const WidgetStyle = styled(RouterLink)(({ theme }) => ({
   zIndex: 999,
@@ -24,14 +25,16 @@ const WidgetStyle = styled(RouterLink)(({ theme }) => ({
 }));
 
 function CartWidget() {
-  const { cartProducts } = useSelector((state) => state.cart);
-  const totalItems = cartProducts.reduce(
-    (acc, product) => acc + product.quantity,
-    0
-  );
+  const cart = useSelector((state) => state.cart);
+  const { website } = useSelector((state) => state.website);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getTotals());
+  }, [cart, dispatch]);
+
   return (
-    <WidgetStyle to="/checkout">
-      <Badge badgeContent={totalItems} color="primary">
+    <WidgetStyle to={`/${website.websiteId}/checkout`}>
+      <Badge badgeContent={cart.cartTotalQuantity} color="primary">
         <ShoppingCartIcon />
       </Badge>
     </WidgetStyle>
