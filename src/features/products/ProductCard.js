@@ -7,17 +7,18 @@ import { CardActionArea, Stack, Button, CardActions } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import noImage from "../../components/no-image.png";
 import { fCurrency } from "../../utils/numberFormat";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
   const { website } = useSelector((state) => state.website);
+  const dispatch = useDispatch();
 
   return (
     <Card>
       <CardActionArea
         onClick={() =>
-          navigate(`/${website.websiteId}/products/${product._id}`)
+          navigate(`/${website.websiteId}/products/${product.rowIndex}`)
         }
       >
         <CardMedia
@@ -50,7 +51,10 @@ function ProductCard({ product }) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button onClick={() => {}} variant="contained">
+        <Button
+          onClick={() => dispatch({ type: "ADD_TO_CART", payload: product })}
+          variant="contained"
+        >
           Add to Cart
         </Button>
       </CardActions>

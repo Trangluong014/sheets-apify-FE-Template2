@@ -56,9 +56,9 @@ const slice = createSlice({
 
 export const getSingleProduct = createAsyncThunk(
   "products/getSingleProduct",
-  async ({ spreadsheetId, productId }) => {
+  async ({ spreadsheetId, range, rowIndex }) => {
     const response = await apiService.get(
-      `/item/${spreadsheetId}/${productId}`
+      `/item/${spreadsheetId}/${range}/${rowIndex}`
     );
     return response.data.data;
   }

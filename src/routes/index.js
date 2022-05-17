@@ -17,10 +17,7 @@ function Router() {
     <Routes>
       <Route path="/:websiteId" element={<MainLayout />}>
         <Route index element={<HomePage />} />
-        <Route
-          path="/:websiteId/products/:productId"
-          element={<DetailPage />}
-        />
+        <Route path="/:websiteId/products/:rowIndex" element={<DetailPage />} />
         <Route
           path="/:websiteId/checkout"
           element={
