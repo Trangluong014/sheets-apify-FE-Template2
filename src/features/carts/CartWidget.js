@@ -18,7 +18,7 @@ const WidgetStyle = styled(RouterLink)(({ theme }) => ({
   height: "40px",
   width: "40px",
   padding: "8px",
-  backgroundColor: "#fff",
+  backgroundColor: "#130C03",
   borderRadius: "50%",
   color: theme.palette.text.primary,
   cursor: "pointer",
