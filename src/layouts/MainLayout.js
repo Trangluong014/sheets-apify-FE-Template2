@@ -31,7 +31,12 @@ function MainLayout() {
   if (website) {
     return (
       <ThemeProvider theme={theme}>
-        <Stack sx={{ minHeight: "100vh" }}>
+        <Stack
+          sx={{ minHeight: "100vh" }}
+          style={{
+            backgroundColor: theme.palette.background.default,
+          }}
+        >
           <MainHeader />
           <CartWidget />
           <Outlet />
