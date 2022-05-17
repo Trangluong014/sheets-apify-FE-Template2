@@ -3,38 +3,42 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 
-import useAuth from "../hooks/useAuth";
-
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useWebsiteConfig } from "../hooks/userWebsiteConfig";
+import { Link } from "@mui/material";
 
 function MainHeader() {
-  const { isAuthenticated, logout } = useAuth();
-
-  let navigate = useNavigate();
   const { website } = useSelector((state) => state.website);
+  const websiteConfig = useWebsiteConfig();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
+          <Link
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={() => navigate(`/${website.websiteId}`)}
+            href={
+              website?.websiteId
+                ? `/${website.websiteId}`
+                : "javascript:void(0)"
+            }
+            style={{
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {websiteConfig.logo && (
+              <img
+                alt={website?.name || "logo"}
+                src={websiteConfig.logo}
+                style={{ height: 32, marginRight: "1rem" }}
+              />
+            )}
             {website?.name}
-          </Typography>
+          </Link>
+
           {/* <Button
             color="inherit"
             onClick={() => {

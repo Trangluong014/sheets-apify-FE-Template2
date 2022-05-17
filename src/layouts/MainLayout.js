@@ -5,11 +5,11 @@ import { Outlet, useParams } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen";
 import CartWidget from "../features/carts/CartWidget";
 import { getSingleWebsite } from "../features/websites/websiteSlice";
-import useWebsiteConfig from "../hooks/userWebsiteConfig";
 
 import MainFooter from "./MainFooter";
 import MainHeader from "./MainHeader";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useWebsiteConfig } from "../hooks/userWebsiteConfig";
 
 function MainLayout() {
   const { websiteId } = useParams();
@@ -30,13 +30,15 @@ function MainLayout() {
 
   if (website) {
     return (
-      <Stack sx={{ minHeight: "100vh" }}>
-        <MainHeader />
-        <CartWidget />
-        <Outlet />
-        <Box sx={{ flexGrow: 1 }} />
-        <MainFooter />
-      </Stack>
+      <ThemeProvider theme={theme}>
+        <Stack sx={{ minHeight: "100vh" }}>
+          <MainHeader />
+          <CartWidget />
+          <Outlet />
+          <Box sx={{ flexGrow: 1 }} />
+          <MainFooter />
+        </Stack>
+      </ThemeProvider>
     );
   } else {
     return <LoadingScreen />;
