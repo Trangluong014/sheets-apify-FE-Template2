@@ -31,21 +31,8 @@ import ProductList from "../features/products/ProductList";
 import { useParams } from "react-router-dom";
 import { parse } from "qs";
 import apiService from "../app/apiService";
+import { useWebsiteConfig } from "../hooks/userWebsiteConfig";
 
-const FILTERS = [
-  {
-    label: "Gender",
-    sheet: "GenderFilter",
-  },
-  {
-    label: "Category",
-    sheet: "CategoryFilter",
-  },
-  {
-    label: "Price",
-    sheet: "PriceFilter",
-  },
-];
 const EMPTY = "__empty__";
 
 function HomePage() {
@@ -61,6 +48,22 @@ function HomePage() {
   );
 
   const { website } = useSelector((state) => state.website);
+  const websiteConfig = useWebsiteConfig();
+
+  const FILTERS = websiteConfig?.filter || [
+    {
+      label: "Gender",
+      sheet: "GenderFilter",
+    },
+    {
+      label: "Category",
+      sheet: "CategoryFilter",
+    },
+    {
+      label: "Price",
+      sheet: "PriceFilter",
+    },
+  ];
 
   // filters
   const [filterValues, setFilterValues] = useState([]);

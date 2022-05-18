@@ -24,5 +24,19 @@
     "shape": {
       "borderRadius": 16
     }
-  }
+  },
+  "filter": [
+    {
+      "label": "Gender",
+      "sheet": "GenderFilter"
+    },
+    {
+      "label": "Category",
+      "sheet": "CategoryFilter"
+    },
+    {
+      "label": "Price",
+      "sheet": "PriceFilter"
+    }
+  ]
 }
