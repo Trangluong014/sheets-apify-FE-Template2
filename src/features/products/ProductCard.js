@@ -3,7 +3,13 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, Stack, Button, CardActions } from "@mui/material";
+import {
+  CardActionArea,
+  Stack,
+  Button,
+  CardActions,
+  Rating,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import noImage from "../../components/no-image.png";
 import { fCurrency } from "../../utils/numberFormat";
@@ -40,13 +46,11 @@ function ProductCard({ product }) {
             alignItems="center"
             justifyContent="flex-end"
           >
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ textDecoration: "line-through", color: "text.disabled" }}
-            >
-              {product.priceSale ? fCurrency(product.priceSale) : ""}
-            </Typography>
+            <Rating
+              value={product.average_rating ? product.average_rating : ""}
+              precision={0.1}
+              readOnly
+            />
             <Typography variant="body2" color="text.secondary">
               {fCurrency(product.price)}
             </Typography>
