@@ -93,8 +93,8 @@ function HomePage() {
   const SORT_OPTIONS = [
     { value: "price.desc", label: "Price: High-Low" },
     { value: "price.asc", label: "Price: Low-High" },
-    { value: "name.dsc", label: "Name: A-Z" },
-    { value: "name.asc", label: "Name: Z-A" },
+    { value: "name.dsc", label: "Name: Z-A" },
+    { value: "name.asc", label: "Name: A-Z" },
   ];
 
   const handleChangeSort = (event, value) => {
