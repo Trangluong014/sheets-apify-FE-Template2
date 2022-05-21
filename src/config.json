@@ -4,18 +4,18 @@
     "palette": {
       "type": "dark",
       "primary": {
-        "main": "#ff8f00"
+        "main": "rgb(141, 141, 170)"
       },
       "secondary": {
-        "main": "#f50057"
+        "main": "rgb(245, 109, 145)"
       },
       "background": {
-        "default": "#A15602",
-        "paper": "#731010"
+        "default": "rgb(223, 223, 222)",
+        "paper": "rgb(247, 245, 242)"
       },
       "text": {
-        "primary": "#fff",
-        "secondary": "rgba(211, 211, 211, 100)"
+        "primary": "rgb(141, 141, 170)",
+        "secondary": "#000000"
       }
     },
     "typography": {
