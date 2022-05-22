@@ -42,7 +42,7 @@ function CartProductList({ setActiveStep }) {
       {cart.cartItems.length === 0 ? (
         <Stack>
           <Typography> Your Cart Is Emty</Typography>
-          <Button onClick={() => navigate(`/${website.websiteId}`)}>
+          <Button onClick={() => navigate(`/${website.websiteId}/home`)}>
             {" "}
             Start Shopping
           </Button>

@@ -84,7 +84,7 @@ function DetailPage() {
               underline="hover"
               color="inherit"
               component={RouterLink}
-              to={`/${website.websiteId}`}
+              to={`/${website.websiteId}/home`}
             >
               {website.name}
             </Link>

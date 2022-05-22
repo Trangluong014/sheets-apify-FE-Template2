@@ -20,7 +20,7 @@ function MainHeader() {
             aria-label="menu"
             href={
               website?.websiteId
-                ? `/${website.websiteId}`
+                ? `/${website.websiteId}/home`
                 : "javascript:void(0)"
             }
             sx={{

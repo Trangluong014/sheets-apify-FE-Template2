@@ -123,13 +123,18 @@ const slice = createSlice({
       const itemIndex = state.cartItems.findIndex(
         (item) => item._id === action.payload._id
       );
+      console.log("index", itemIndex);
+      console.log("item", action.payload._id);
+      console.log("quant", state.cartItems[itemIndex].cartQuantity);
       if (state.cartItems[itemIndex].cartQuantity > 1) {
         state.cartItems[itemIndex].cartQuantity -= 1;
       } else if (state.cartItems[itemIndex].cartQuantity === 1) {
         const nextCartItems = state.cartItems.filter(
-          (item) => item._id === action.payload._id
+          (item) => item._id !== action.payload._id
         );
+        console.log("next cart", nextCartItems);
         state.cartItems = nextCartItems;
+        console.log("cart", state.cartItems);
       }
     },
     increaseQuant(state, action) {
