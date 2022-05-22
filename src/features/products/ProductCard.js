@@ -6,10 +6,8 @@ import Typography from "@mui/material/Typography";
 import {
   CardActionArea,
   Stack,
-  Button,
   CardActions,
   Rating,
-  CardHeader,
   IconButton,
   Tooltip,
 } from "@mui/material";

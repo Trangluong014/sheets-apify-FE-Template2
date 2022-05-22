@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import apiService from "../app/apiService";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
+
 import { Link, CardActionArea, CardActions, Box } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen";

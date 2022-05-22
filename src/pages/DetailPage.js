@@ -7,7 +7,6 @@ import {
   CardContent,
   CardHeader,
   Container,
-  Divider,
   Grid,
   Link,
   Rating,

@@ -16,12 +16,10 @@ import React, { useEffect } from "react";
 import { fCurrency } from "../../utils/numberFormat";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import AddBoxIcon from "@mui/icons-material/AddBox";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addToCart,
-  decreaseCart,
   decreaseQuant,
   getTotals,
   increaseQuant,

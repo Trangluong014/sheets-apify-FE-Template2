@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
-import { toast } from "react-toastify";
-import { CheckOutlined } from "@mui/icons-material";
 
 const initialState = {
   isLoading: false,

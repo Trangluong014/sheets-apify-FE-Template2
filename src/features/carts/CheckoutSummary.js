@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Container,
-  Divider,
   Stack,
   Table,
   TableBody,
@@ -15,7 +14,6 @@ import {
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 
 import { fCurrency } from "../../utils/numberFormat";
 import { checkout, clearCart } from "./cartSlice";

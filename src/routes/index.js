@@ -11,7 +11,6 @@ import LoginPage from "../pages/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import OrderPage from "../pages/OrderPage";
 import RegisterPage from "../pages/RegisterPage";
-import AuthRequire from "./AuthRequire";
 
 function Router() {
   return (
