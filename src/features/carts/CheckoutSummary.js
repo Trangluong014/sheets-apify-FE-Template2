@@ -46,9 +46,11 @@ function CheckoutSummary() {
 
   return (
     <Container>
-      <Typography variant="h3">Your Order</Typography>
-      <Divider />
-      <Stack direction="row" spacing={3} justifyContent="space-between" my={2}>
+      <Typography variant="h3" sx={{ my: 8 }}>
+        Your Order
+      </Typography>
+      {/* <Divider /> */}
+      <Stack direction="row" spacing={3} justifyContent="space-between" my={6}>
         <Box>
           <Typography>Order Date</Typography>
           <Typography>{new Date().toLocaleDateString("en-GB")}</Typography>
@@ -74,15 +76,15 @@ function CheckoutSummary() {
           <Typography>{delivery.country}</Typography>
         </Box>
       </Stack>
-      <Divider />
-      <TableContainer>
+      {/* <Divider /> */}
+      <TableContainer sx={{ my: 4 }}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Product</TableCell>
               <TableCell>Price</TableCell>
               <TableCell>Quantity</TableCell>
-              <TableCell>Total Price</TableCell>
+              <TableCell style={{ textAlign: "right" }}>Total Price</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -114,14 +116,16 @@ function CheckoutSummary() {
                 </TableCell>
                 <TableCell>{fCurrency(price)}</TableCell>
                 <TableCell>{cartQuantity}</TableCell>
-                <TableCell>{fCurrency(cartQuantity * price)}</TableCell>
+                <TableCell style={{ textAlign: "right" }}>
+                  {fCurrency(cartQuantity * price)}
+                </TableCell>
               </TableRow>
             ))}
             <TableRow>
               <TableCell />
               <TableCell />
               <TableCell>Total Price</TableCell>
-              <TableCell>
+              <TableCell style={{ textAlign: "right" }}>
                 <Typography>{fCurrency(cartTotalAmount)}</Typography>
               </TableCell>
             </TableRow>

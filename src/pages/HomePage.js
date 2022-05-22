@@ -32,6 +32,7 @@ import { useParams } from "react-router-dom";
 import { parse } from "qs";
 import apiService from "../app/apiService";
 import { useWebsiteConfig } from "../hooks/userWebsiteConfig";
+import { width } from "@mui/system";
 
 const EMPTY = "__empty__";
 
@@ -40,6 +41,7 @@ function HomePage() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
   const [order, setOrder] = useState("");
+  const [banner, setBanner] = useState("");
 
   const params = useParams();
   console.log(params);
@@ -136,6 +138,24 @@ function HomePage() {
     );
   }, [website, dispatch, page, search, sort, order]);
 
+  useEffect(() => {
+    try {
+      const { spreadsheetId } = website;
+      const fetchData = async () => {
+        const response = await apiService.get(`/item/${spreadsheetId}`, {
+          params: {
+            range: "Banner",
+          },
+        });
+        const { itemList } = response.data.data;
+        console.log(banner, itemList);
+        setBanner(itemList);
+      };
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   React.useEffect(() => {
     const subscription = watch((data) => {
       const params = Object.values(data)
@@ -171,7 +191,7 @@ function HomePage() {
               const lcaseFilter = filter.toLowerCase();
               return (
                 <Stack key={filter} direction="column">
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                  <Typography variant="body" sx={{ fontWeight: 600 }}>
                     {filter}
                   </Typography>
                   <FRadioGroup
@@ -189,7 +209,7 @@ function HomePage() {
               );
             })}
 
-            <Box>
+            {FILTERS && (
               <Button
                 variant="outlined"
                 onClick={() => reset()}
@@ -197,11 +217,14 @@ function HomePage() {
               >
                 Clear All
               </Button>
-            </Box>
+            )}
           </Stack>
         </FormProvider>
       </Stack>
       <Stack sx={{ flexGrow: 1 }}>
+        <Box sx={{ mb: 3 }}>
+          <img src={banner[0].image} width="100%" />
+        </Box>
         <Stack
           spacing={2}
           direction={{ xs: "column", sm: "row" }}

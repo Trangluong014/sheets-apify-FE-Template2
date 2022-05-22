@@ -4,6 +4,8 @@ import {
   Breadcrumbs,
   Button,
   Card,
+  CardContent,
+  CardHeader,
   Container,
   Divider,
   Grid,
@@ -118,6 +120,12 @@ function DetailPage() {
                                 />
                               </Box>
                             </Box>
+                            <Card elevation={0}>
+                              <CardHeader title="Description" />
+                              <CardContent>
+                                <Typography>{product.description}</Typography>
+                              </CardContent>
+                            </Card>
                           </Grid>
                           <Grid item xs={12} md={6}>
                             <Typography
@@ -146,15 +154,14 @@ function DetailPage() {
                             >
                               <Rating
                                 name="rangting"
-                                value={rating}
+                                value={rating || product.average_rating}
                                 onChange={handleRating}
                               />
                               <Typography
                                 variant="body2"
                                 sx={{ color: "text.secondary" }}
                               >
-                                (Total Rating: {product.total_rating} ) (Average
-                                Rating: {product.average_rating} )
+                                ({product.total_rating})
                               </Typography>
                             </Stack>
                             <Typography variant="h4" sx={{ mb: 3 }}>
@@ -170,9 +177,6 @@ function DetailPage() {
                               &nbsp;{fCurrency(product.price)}
                             </Typography>
 
-                            <Divider sx={{ borderStyle: "dashed" }} />
-                            <Typography>{product.description}</Typography>
-                            <Divider sx={{ borderStyle: "dashed" }} />
                             <Box sx={{ my: 3 }}>
                               <Button
                                 variant="contained"
@@ -181,11 +185,13 @@ function DetailPage() {
                                 Add to Cart
                               </Button>
                             </Box>
-                            <Box>
-                              <div id="disqus_thread"></div>
-                            </Box>
                           </Grid>
                         </Grid>
+                        <CardContent>
+                          <Grid item xs={12}>
+                            <div id="disqus_thread"></div>
+                          </Grid>
+                        </CardContent>
                       </Card>
                     ) : (
                       <Typography variant="h6">Product not found!</Typography>

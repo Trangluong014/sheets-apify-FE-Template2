@@ -9,12 +9,16 @@ import {
   Button,
   CardActions,
   Rating,
+  CardHeader,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import noImage from "../../components/no-image.png";
 import { fCurrency } from "../../utils/numberFormat";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../carts/cartSlice";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
@@ -37,33 +41,41 @@ function ProductCard({ product }) {
           alt={product.name}
         />
         <CardContent>
-          <Typography gutterBottom variant="body" component="div" noWrap>
+          <Typography gutterBottom variant="body2" noWrap sx={{ my: 2 }}>
             {product.name}
           </Typography>
-          <Stack
-            direction="row"
-            spacing={0.5}
-            alignItems="center"
-            justifyContent="flex-end"
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: 600 }}
+            color="text.secondary"
           >
+            {fCurrency(product.price)}
+          </Typography>
+        </CardContent>
+        <CardContent>
+          <Stack direction="row">
             <Rating
               value={product.average_rating ? product.average_rating : ""}
               precision={0.1}
               readOnly
+              size="small"
             />
-            <Typography variant="body2" color="text.secondary">
-              {fCurrency(product.price)}
+            <Typography variant="body2" sx={{ mx: 1 }}>
+              ({product.total_rating || 0})
             </Typography>
           </Stack>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button
-          onClick={() => dispatch(addToCart(product))}
-          variant="contained"
-        >
-          Add to Cart
-        </Button>
+      <CardActions sx={{ justifyContent: "flex-end" }}>
+        <Tooltip title="Add to cart">
+          <IconButton
+            onClick={() => dispatch(addToCart(product))}
+            variant="contained"
+            size="small"
+          >
+            <AddShoppingCartIcon fontSize="inherit" />
+          </IconButton>
+        </Tooltip>
       </CardActions>
     </Card>
   );

@@ -10,12 +10,14 @@ import {
   Button,
   Box,
   Stack,
+  Tooltip,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { fCurrency } from "../../utils/numberFormat";
 import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
@@ -99,13 +101,15 @@ function CartProductList({ setActiveStep }) {
                       <TableCell>
                         {fCurrency(product.cartQuantity * product.price)}
                       </TableCell>
-                      <TableCell>
-                        <IconButton
-                          sx={{ color: "red" }}
-                          onClick={() => dispatch(removeFromCart([product]))}
-                        >
-                          <DeleteForeverIcon />
-                        </IconButton>
+                      <TableCell sx={{ textAlign: "right" }}>
+                        <Tooltip title="Remove from cart">
+                          <IconButton
+                            size="large"
+                            onClick={() => dispatch(removeFromCart([product]))}
+                          >
+                            <DeleteIcon fontSize="inherit" />
+                          </IconButton>
+                        </Tooltip>
                       </TableCell>
                     </TableRow>
                   ))}

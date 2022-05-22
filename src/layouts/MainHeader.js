@@ -14,19 +14,19 @@ function MainHeader() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" elevation={0} sx={{ bgcolor: "transparent" }}>
         <Toolbar>
           <Link
-            color="inherit"
             aria-label="menu"
             href={
               website?.websiteId
                 ? `/${website.websiteId}`
                 : "javascript:void(0)"
             }
-            style={{
+            sx={{
               textDecoration: "none",
               whiteSpace: "nowrap",
+              color: "text.primary",
             }}
           >
             {websiteConfig.logo && (
