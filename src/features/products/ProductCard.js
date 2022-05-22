@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../carts/cartSlice";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
+import "./productCard.css";
+
 function ProductCard({ product }) {
   const navigate = useNavigate();
 
@@ -26,7 +28,7 @@ function ProductCard({ product }) {
   const dispatch = useDispatch();
 
   return (
-    <Card>
+    <Card className="product-card">
       <CardActionArea
         onClick={() =>
           navigate(`/${website.websiteId}/products/${product.rowIndex}`)

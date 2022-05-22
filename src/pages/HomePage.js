@@ -12,7 +12,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../features/products/productSlice";
 
@@ -32,7 +32,8 @@ import { useParams } from "react-router-dom";
 import { parse } from "qs";
 import apiService from "../app/apiService";
 import { useWebsiteConfig } from "../hooks/userWebsiteConfig";
-import { width } from "@mui/system";
+
+import _debounce from "lodash/debounce";
 
 const EMPTY = "__empty__";
 
@@ -122,12 +123,13 @@ function HomePage() {
   const { reset, watch } = methods;
 
   const dispatch = useDispatch();
+  const debounceDispatch = useMemo(() => _debounce(dispatch, 300), [dispatch]);
 
   useEffect(() => {
     const { spreadsheetId } = website;
     const searchquery = search ? { name__contains: search } : "";
 
-    dispatch(
+    debounceDispatch(
       getProducts({
         spreadsheetId,
         page,
@@ -136,7 +138,7 @@ function HomePage() {
         order,
       })
     );
-  }, [website, dispatch, page, search, sort, order]);
+  }, [website, debounceDispatch, page, search, sort, order]);
 
   useEffect(() => {
     try {
@@ -167,7 +169,7 @@ function HomePage() {
       const { spreadsheetId } = website;
       const searchquery = search ? { name__contains: search } : "";
 
-      dispatch(
+      debounceDispatch(
         getProducts({
           spreadsheetId,
           page,
@@ -179,7 +181,7 @@ function HomePage() {
       );
     });
     return () => subscription.unsubscribe();
-  }, [watch, dispatch, order, search, sort, page, website]);
+  }, [watch, debounceDispatch, order, search, sort, page, website]);
 
   return (
     <Container sx={{ display: "flex", minHeight: "100vh", mt: 3 }}>
@@ -223,7 +225,7 @@ function HomePage() {
       </Stack>
       <Stack sx={{ flexGrow: 1 }}>
         <Box sx={{ mb: 3 }}>
-          <img src={banner[0].image} width="100%" />
+          {banner[0] && <img src={banner[0].image} width="100%" />}
         </Box>
         <Stack
           spacing={2}
