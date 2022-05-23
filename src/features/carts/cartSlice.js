@@ -148,7 +148,7 @@ const slice = createSlice({
     },
     removeFromCart(state, action) {
       const nextCartItems = state.cartItems.filter(
-        (item) => item._id === action.payload._id
+        (item) => item._id !== action.payload._id
       );
       state.cartItems = nextCartItems;
     },
