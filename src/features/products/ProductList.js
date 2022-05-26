@@ -15,6 +15,7 @@ function ProductList({ products }) {
   const transApi = useSpringRef();
   const transition = useTransition(products || [], {
     ref: transApi,
+    keys: (item) => item._id,
     trail: 400 / (products?.length || 1),
     from: { opacity: 0, scale: 0 },
     enter: { opacity: 1, scale: 1 },

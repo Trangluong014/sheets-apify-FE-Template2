@@ -129,7 +129,7 @@ function HomePage() {
     const { spreadsheetId } = website;
     const searchquery = search ? { name__contains: search } : "";
 
-    debounceDispatch(
+    const promise = dispatch(
       getProducts({
         spreadsheetId,
         page,
@@ -138,6 +138,7 @@ function HomePage() {
         order,
       })
     );
+    return () => promise.abort();
   }, [website, debounceDispatch, page, search, sort, order]);
 
   useEffect(() => {
@@ -262,16 +263,10 @@ function HomePage() {
         </Stack>
 
         <Box sx={{ position: "relative", height: 1 }}>
-          {isLoading ? (
+          {isLoading || error ? (
             <LoadingScreen />
           ) : (
-            <>
-              {error ? (
-                <Alert severity="error">{error}</Alert>
-              ) : (
-                <ProductList products={products} />
-              )}
-            </>
+            <ProductList products={products} />
           )}
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center", mt: 3, mb: 3 }}>

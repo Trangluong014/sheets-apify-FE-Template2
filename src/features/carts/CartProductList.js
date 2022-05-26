@@ -103,7 +103,7 @@ function CartProductList({ setActiveStep }) {
                         <Tooltip title="Remove from cart">
                           <IconButton
                             size="large"
-                            onClick={() => dispatch(removeFromCart([product]))}
+                            onClick={() => dispatch(removeFromCart(product))}
                           >
                             <DeleteIcon fontSize="inherit" />
                           </IconButton>

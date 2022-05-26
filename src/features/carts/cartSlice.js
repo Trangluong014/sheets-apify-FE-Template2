@@ -150,7 +150,9 @@ const slice = createSlice({
       const nextCartItems = state.cartItems.filter(
         (item) => item._id !== action.payload._id
       );
+      console.log("next cart", nextCartItems);
       state.cartItems = nextCartItems;
+      console.log("cart", state.cartItems);
     },
 
     getTotals(state, action) {
